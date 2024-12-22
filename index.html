@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Verkehrssituationen</title>
+  <style>
+    body {
+      background-color: lightblue;
+      color: darkblue;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      font-size: 18px;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .container {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .settings {
+      margin: 5px 0;
+      text-align: center;
+    }
+
+    .settings label {
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    .controls {
+      margin: 5px 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .controls button {
+      padding: 8px 15px;
+      font-size: 14px;
+      background-color: darkblue;
+      color: lightyellow;
+      border: none;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    .controls button:disabled {
+      background-color: gray;
+      cursor: not-allowed;
+    }
+
+    .image-and-checkboxes {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      margin-top: 5px;
+    }
+
+    .image-container {
+      margin: 10px;
+      width: 700px;
+      height: 500px;
+      background-color: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid white;
+      overflow: hidden;
+    }
+
+    #image {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .checkboxes {
+      text-align: left;
+      margin-left: 20px;
+    }
+
+    .checkboxes label {
+      display: block;
+      margin: 10px 0;
+      font-size: 20px;
+    }
+
+    .checkboxes input[type="checkbox"] {
+      width: 25px;
+      height: 25px;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>TEST VERKEHRSSITUATIONEN</h1>
+
+    <div class="settings">
+      <label for="displayTime">Dauer der Bildanzeige (Sekunden): </label>
+      <input type="number" id="displayTime" value="5" min="1">
+    </div>
+
+    <div class="controls">
+      <button id="startButton">Test starten</button>
+      <button id="nextButton" disabled>Nächstes Bild →</button>
+    </div>
+
+    <div class="image-and-checkboxes">
+      <div class="image-container" id="imageContainer">
+        <img id="image" src="" alt="Verkehrssituation">
+      </div>
+      <div class="checkboxes" id="checkboxes">
+        <label><input type="checkbox" id="option1"> Fußgänger, Kinder</label>
+        <label><input type="checkbox" id="option2"> Autos</label>
+        <label><input type="checkbox" id="option3"> Fahrrad, Motorrad, Moped</label>
+        <label><input type="checkbox" id="option4"> Verkehrszeichen</label>
+        <label><input type="checkbox" id="option5"> Ampel</label>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const startButton = document.getElementById('startButton');
+    const nextButton = document.getElementById('nextButton');
+    const displayTimeInput = document.getElementById('displayTime');
+
+    let currentImageIndex = 0;
+    let totalCorrectAnswersCount = 0;
+    const totalImages = 10;
+    const correctAnswers = {
+      1: [false, true, true, false, true],
+      2: [true, true, false, true, false],
+      3: [true, true, true, true, true],
+      4: [true, false, true, true, true],
+      5: [true, true, false, true, true],
+      6: [false, true, false, true, true],
+      7: [true, true, false, true, true],
+      8: [true, true, false, true, false],
+      9: [false, true, true, true, false],
+      10: [true, true, false, true, true]
+    };
+
+    function showImage(index) {
+      const image = document.getElementById('image');
+      image.src = `images/bild${index}.jpg`;
+      image.alt = `Verkehrssituation ${index}`;
+
+      setTimeout(() => {
+        image.src = "";
+      }, parseInt(displayTimeInput.value) * 1000);
+    }
+
+    function startTest() {
+      currentImageIndex = 1;
+      totalCorrectAnswersCount = 0;
+      startButton.disabled = true;
+      nextButton.disabled = false;
+      showImage(currentImageIndex);
+    }
+
+    function nextImage() {
+      const userAnswers = [
+        document.getElementById('option1').checked,
+        document.getElementById('option2').checked,
+        document.getElementById('option3').checked,
+        document.getElementById('option4').checked,
+        document.getElementById('option5').checked
+      ];
+
+      let correctAnswersInThisImage = 0;
+      for (let i = 0; i < userAnswers.length; i++) {
+        if (userAnswers[i] === correctAnswers[currentImageIndex][i]) {
+          correctAnswersInThisImage++;
+        }
+      }
+
+      totalCorrectAnswersCount += correctAnswersInThisImage;
+
+      if (currentImageIndex < totalImages) {
+        currentImageIndex++;
+        showImage(currentImageIndex);
+
+        document.getElementById('option1').checked = false;
+        document.getElementById('option2').checked = false;
+        document.getElementById('option3').checked = false;
+        document.getElementById('option4').checked = false;
+        document.getElementById('option5').checked = false;
+      } else {
+        const totalElements = totalImages * 5;
+        const percentage = (totalCorrectAnswersCount / totalElements) * 100;
+        if (percentage >= 70) {
+          alert(`Test bestanden! Sie haben ${totalCorrectAnswersCount} von ${totalElements} Elementen richtig erkannt (${percentage}%).`);
+        } else {
+          alert(`Test nicht bestanden. Sie haben ${totalCorrectAnswersCount} von ${totalElements} Elementen richtig erkannt (${percentage}%).`);
+        }
+        startButton.disabled = false;
+        nextButton.disabled = true;
+      }
+    }
+
+    startButton.addEventListener('click', startTest);
+    nextButton.addEventListener('click', nextImage);
+  </script>
+</body>
+
+</html>

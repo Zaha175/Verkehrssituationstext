@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="de" class="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -19,16 +19,45 @@
     --primary-light: #e0f2fe;
     --success: #059669;
     --success-bg: #ecfdf5;
+    --success-border: #a7f3d0;
     --danger: #dc2626;
     --danger-bg: #fef2f2;
+    --danger-border: #fecaca;
     --stage-bg: #0f172a;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     color: var(--text);
     background-color: var(--bg);
     font-size: 16px;
   }
+  html.dark {
+    --bg: #0b1120;
+    --surface: #111827;
+    --surface-muted: #1e293b;
+    --border: #1e293b;
+    --border-strong: #334155;
+    --text: #f8fafc;
+    --text-muted: #94a3b8;
+    --primary: #38bdf8;
+    --primary-hover: #0284c7;
+    --primary-light: rgba(56, 189, 248, 0.14);
+    --success: #34d399;
+    --success-bg: rgba(6, 78, 59, 0.45);
+    --success-border: rgba(52, 211, 153, 0.35);
+    --danger: #f87171;
+    --danger-bg: rgba(127, 29, 29, 0.45);
+    --danger-border: rgba(248, 113, 113, 0.35);
+    --stage-bg: #060b14;
+  }
   * { box-sizing: border-box; }
-  body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg);
+    color: var(--text);
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
   button, input, select { font: inherit; }
   button { touch-action: manipulation; cursor: pointer; }
   .topbar {
@@ -47,12 +76,18 @@
     color: var(--text);
     letter-spacing: -0.01em;
   }
+  .topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
   .lang-switch {
     display: inline-flex;
     background: var(--surface-muted);
     padding: 4px;
     border-radius: 8px;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-strong);
     gap: 4px;
   }
   .lang-btn {
@@ -68,7 +103,23 @@
   .lang-btn.active {
     background: var(--surface);
     color: var(--text);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+  }
+  .theme-btn {
+    border: 1px solid var(--border-strong);
+    background: var(--surface-muted);
+    color: var(--text);
+    padding: 7px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s ease;
+  }
+  .theme-btn:hover {
+    border-color: var(--primary);
   }
   .container {
     width: 100%;
@@ -84,7 +135,7 @@
     justify-content: space-between;
     gap: 16px;
     background: var(--surface);
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-strong);
     border-radius: 12px;
     padding: 16px 20px;
     margin-bottom: 20px;
@@ -110,7 +161,7 @@
     border: 1px solid var(--border-strong);
     border-radius: 8px;
     padding: 6px 12px;
-    background: var(--surface);
+    background: var(--bg);
     color: var(--text);
     font-weight: 600;
     font-variant-numeric: tabular-nums;
@@ -118,6 +169,7 @@
   .field input[type="file"] {
     font-size: 13px;
     max-width: 280px;
+    color: var(--text-muted);
   }
   .controls {
     display: flex;
@@ -127,7 +179,7 @@
   .btn-primary {
     border: 0;
     border-radius: 8px;
-    background: var(--primary);
+    background: #0284c7;
     color: #ffffff;
     font-weight: 600;
     min-height: 44px;
@@ -135,12 +187,12 @@
     transition: background 0.15s ease;
   }
   .btn-primary:hover:not(:disabled) {
-    background: var(--primary-hover);
+    background: #0369a1;
   }
   .btn-secondary {
     border: 1px solid var(--border-strong);
     border-radius: 8px;
-    background: var(--surface);
+    background: var(--surface-muted);
     color: var(--text);
     font-weight: 600;
     min-height: 44px;
@@ -148,7 +200,7 @@
     transition: background 0.15s ease;
   }
   .btn-secondary:hover:not(:disabled) {
-    background: var(--surface-muted);
+    border-color: var(--primary);
   }
   button:disabled {
     opacity: 0.45;
@@ -219,7 +271,7 @@
   }
   .checklist-card {
     background: var(--surface);
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-strong);
     border-radius: 12px;
     padding: 18px;
     display: flex;
@@ -231,6 +283,7 @@
     margin: 0;
     font-size: 16px;
     font-weight: 700;
+    color: var(--text);
   }
   .checkboxes {
     display: flex;
@@ -261,7 +314,7 @@
     width: 22px;
     height: 22px;
     flex: 0 0 22px;
-    accent-color: var(--primary);
+    accent-color: #0284c7;
     margin: 0;
   }
   .option-text {
@@ -309,12 +362,12 @@
   .result-banner.pass {
     background: var(--success-bg);
     color: var(--success);
-    border: 1px solid #a7f3d0;
+    border: 1px solid var(--success-border);
   }
   .result-banner.fail {
     background: var(--danger-bg);
     color: var(--danger);
-    border: 1px solid #fecaca;
+    border: 1px solid var(--danger-border);
   }
   .review-table {
     width: 100%;
@@ -323,7 +376,7 @@
   }
   .review-table th, .review-table td {
     padding: 10px 12px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--border-strong);
     text-align: left;
   }
   .review-table th {
@@ -341,10 +394,16 @@
 <body>
   <header class="topbar">
     <div class="brand" id="appTitle">TEST VERKEHRSSITUATIONEN · SITUAȚII DE TRAFIC</div>
-    <div class="lang-switch" role="group" aria-label="Language">
-      <button type="button" class="lang-btn" data-lang="de">Deutsch</button>
-      <button type="button" class="lang-btn" data-lang="ro">Română</button>
-      <button type="button" class="lang-btn" data-lang="bi">DE + RO</button>
+    <div class="topbar-actions">
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" class="lang-btn" data-lang="de">Deutsch</button>
+        <button type="button" class="lang-btn" data-lang="ro">Română</button>
+        <button type="button" class="lang-btn" data-lang="bi">DE + RO</button>
+      </div>
+      <button type="button" class="theme-btn" id="themeToggleBtn" aria-label="Toggle Dark Mode">
+        <span id="themeIcon">☀</span>
+        <span id="themeText">Light</span>
+      </button>
     </div>
   </header>
 
@@ -502,7 +561,9 @@ const i18n = {
     thSelected: 'Ihre Auswahl',
     thExpected: 'Richtige Elemente',
     thScore: 'Übereinstimmung',
-    none: 'Keine'
+    none: 'Keine',
+    themeDark: 'Dark Mode',
+    themeLight: 'Light Mode'
   },
   ro: {
     title: 'TEST SITUAȚII DE TRAFIC',
@@ -529,7 +590,9 @@ const i18n = {
     thSelected: 'Selecția ta',
     thExpected: 'Elemente corecte',
     thScore: 'Punctaj',
-    none: 'Niciunul'
+    none: 'Niciunul',
+    themeDark: 'Mod Întunecat',
+    themeLight: 'Mod Luminos'
   },
   bi: {
     title: 'TEST VERKEHRSSITUATIONEN · SITUAȚII DE TRAFIC',
@@ -556,11 +619,14 @@ const i18n = {
     thSelected: 'Auswahl / Selecție',
     thExpected: 'Lösung / Corect',
     thScore: 'Score',
-    none: '—'
+    none: '—',
+    themeDark: 'Dark',
+    themeLight: 'Light'
   }
 };
 
-let lang = 'ro';
+let lang = 'de';
+let isDark = true;
 const totalImages = 10;
 let currentImageIndex = 0;
 let totalCorrectAnswersCount = 0;
@@ -582,7 +648,22 @@ const timerFill = document.getElementById('timerFill');
 const resultPanel = document.getElementById('resultPanel');
 const resultBanner = document.getElementById('resultBanner');
 const reviewBody = document.getElementById('reviewBody');
+const themeToggleBtn = document.getElementById('themeToggleBtn');
+const themeIcon = document.getElementById('themeIcon');
+const themeText = document.getElementById('themeText');
 const boxes = Array.from({length: 5}, (_, i) => document.getElementById('option' + (i + 1)));
+
+function updateThemeUI() {
+  document.documentElement.classList.toggle('dark', isDark);
+  const t = i18n[lang];
+  themeIcon.textContent = isDark ? '☀' : '☾';
+  themeText.textContent = isDark ? t.themeLight : t.themeDark;
+}
+
+themeToggleBtn.addEventListener('click', () => {
+  isDark = !isDark;
+  updateThemeUI();
+});
 
 function buildSvgScene(index) {
   const ans = correctAnswers[index] || [false, true, false, true, false];
@@ -644,6 +725,7 @@ function updateLanguageUI() {
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.lang === lang);
   });
+  updateThemeUI();
 }
 
 document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -733,7 +815,6 @@ function showImage(index) {
 
   image.onerror = () => {
     if (token !== session) return;
-    // Automatic fallback to built-in SVG scene if bildX.jpg is missing in folder
     image.onerror = null;
     image.src = buildSvgScene(index);
   };
